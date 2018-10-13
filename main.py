@@ -1,4 +1,5 @@
 from flask import Flask, request, redirect, render_template
+import cgi
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -18,10 +19,30 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
+@app.route('/', methods=['POST'])
+def error():
+
+    title = request.form['title']
+    title_error = ""
+    if len(title) < 1:
+        title_error = "Please enter a title"
+                  
+    body = request.form['body']
+    body_error = ""
+    if len(body) < 1:
+        body_error = "Please enter a body"
+
+    if not title_error and not body_error:
+        return render_template('blog.html')
+
+    else:
+        return render_template('newpost.html',
+        title_error=title_error,
+        body_error=body_error)
+
 @app.route('/blog')
 def blog():
-    newpost = request.form['newpost']
-    return render_template('blog.html', newpost=newpost)
+    return render_template('blog.html')
 
 @app.route('/newpost')
 def newpost():
@@ -36,8 +57,8 @@ def index():
         db.session.add(new_blog)
         db.session.commit()
 
-    
-    return render_template('blog.html',title="Build A Blog")
+    encoded_error = request.args.get("error")
+    return render_template('blog.html',title="Build A Blog", error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 
 if __name__ == '__main__':

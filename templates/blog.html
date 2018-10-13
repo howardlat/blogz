@@ -8,12 +8,6 @@
     <h1>Build a Blog</h1>
 </div>
 
-    {% if blogs|length == 0 %}
-        <p>No blogs yet</p>
-        {% else %}
-
-    {% endif %}
-
     <ul>
         {% for blog in blogs %}
         <li>{{blog.name}}

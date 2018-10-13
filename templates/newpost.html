@@ -2,12 +2,33 @@
 
 {% block content %}
 
+<style>
+    div.a { text-align: center;}
+    .error {color: red;}
+    div.b { width: 200px; height: 200px;}
+</style> 
+
+<div class="a">
+    <h1>Add a Blog Entry</h1>
+</div>
+
     <form action="/newpost" method='post'>
         <label>
-            Add a New Post:
-            <input type="text" name='newpost' />
+            Title for your new blog:
+            <input style="width: 210px;" type="text" name='newpost' />
+            <p class="error">{{title_error}}</p>
         </label>
-        <input type="submit" value='Add Post' />
+
+        <div class="b">             
+        <label>
+            Your new blog:
+            <input style="width: 250px; height: 170px;" type="text" name='newpost' />
+            <p class="error">{{body_error}}</p>
+        </label>
+        </div>
+
+        <input type="submit" value='Add Entry' />
+        
     </form>
 
       
