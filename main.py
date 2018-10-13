@@ -17,9 +17,16 @@ class Blog(db.Model):
     def __init__(self, title, body):
         self.title = title
         self.body = body
-        
 
+@app.route('/blog')
+def blog():
+    newpost = request.form['newpost']
+    return render_template('blog.html', newpost=newpost)
 
+@app.route('/newpost')
+def newpost():
+    return render_template('newpost.html')
+    
 @app.route('/', methods=['POST', 'GET'])
 def index():
 
@@ -29,22 +36,8 @@ def index():
         db.session.add(new_blog)
         db.session.commit()
 
-    blogs = Blog.query.filter_by(completed=False).all()
-    completed_blogs = Blog.query.filter_by(completed=True).all()
-    return render_template('todos.html',title="Build A Blog", 
-        blogs=blogs, completed_blogs=completed_blogs)
-
-
-@app.route('/delete-blog', methods=['POST'])
-def delete_blog():
-
-    blog_id = int(request.form['blog-id'])
-    blog = Blog.query.get(blog_id)
-    blog.completed = True
-    db.session.add(blog)
-    db.session.commit()
-
-    return redirect('/')
+    
+    return render_template('blog.html',title="Build A Blog")
 
 
 if __name__ == '__main__':

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form action="/newpost" method='post'>
+        <label>
+            Add a New Post:
+            <input type="text" name='newpost' />
+        </label>
+        <input type="submit" value='Add Post' />
+    </form>
+
+      
+        
+{% endblock %}
