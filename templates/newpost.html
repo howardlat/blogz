@@ -4,33 +4,34 @@
 
 <style>
     div.a { text-align: center;}
-    .error {color: red;}
     div.b { width: 200px; height: 200px;}
+    .error { color: red;}
 </style> 
 
-<div class="a">
+<div class="a"> 
     <h1>Add a Blog Entry</h1>
 </div>
 
-    <form action="/newpost" method='post'>
+    <form action="/newpost">
         <label>
             Title for your new blog:
-            <input style="width: 210px;" type="text" name='newpost' />
+            <input style="width: 210px;" type="text" name='title' />
             <p class="error">{{title_error}}</p>
         </label>
 
         <div class="b">             
         <label>
             Your new blog:
-            <input style="width: 250px; height: 170px;" type="text" name='newpost' />
+            <input style="width: 250px; height: 170px;" type="text" name='body' />
             <p class="error">{{body_error}}</p>
         </label>
         </div>
-
         <input type="submit" value='Add Entry' />
-        
     </form>
 
-      
-        
+{% if error %}
+    <p class='error'>{{ title_error }}</p> 
+    <p class='error'>{{ body_error }}</p> 
+{% endif %}
+
 {% endblock %}

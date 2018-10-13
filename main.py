@@ -13,11 +13,19 @@ class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
-    body = db.Column(db.String(600))
+    body = db.Column(db.String(400))
 
     def __init__(self, title, body):
         self.title = title
         self.body = body
+
+@app.route('/blog')
+def blog():
+    return render_template('blog.html')
+
+@app.route('/newpost')
+def newpost():
+    return render_template('newpost.html')
 
 @app.route('/', methods=['POST'])
 def error():
@@ -32,21 +40,14 @@ def error():
     if len(body) < 1:
         body_error = "Please enter a body"
 
-    if not title_error and not body_error:
-        return render_template('blog.html')
+    #if not title_error and not body_error:
+        #return [blog.name for blog in Blog.query.all()]
 
-    else:
+    #else:
         return render_template('newpost.html',
         title_error=title_error,
         body_error=body_error)
 
-@app.route('/blog')
-def blog():
-    return render_template('blog.html')
-
-@app.route('/newpost')
-def newpost():
-    return render_template('newpost.html')
     
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -57,8 +58,9 @@ def index():
         db.session.add(new_blog)
         db.session.commit()
 
+    blogs = Blog.query.all()
     encoded_error = request.args.get("error")
-    return render_template('blog.html',title="Build A Blog", error=encoded_error and cgi.escape(encoded_error, quote=True))
+    return render_template('blog.html',title="Build A Blog", blogs=blogs, error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 
 if __name__ == '__main__':
