@@ -19,6 +19,29 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
+
+@app.route('/')
+def error():
+
+    
+    title = request.form['title']
+    title_error = ""
+    if len(title) < 0:
+        title_error = "Please enter a title"
+
+    body = request.form['body']
+    body_error = ""
+    if len(body) < 0:
+        body_error = "Please enter a body"   
+
+    if not title_error and not body_error:
+        return render_template('blog.html')
+
+    else:
+        return redirect('/newpost',
+        title_error=title_error,
+        body_error=body_error)
+
 @app.route('/blog')
 def blog():
     return render_template('blog.html')
@@ -26,27 +49,6 @@ def blog():
 @app.route('/newpost')
 def newpost():
     return render_template('newpost.html')
-
-@app.route('/', methods=['POST'])
-def error():
-
-    title = request.form['title']
-    title_error = ""
-    if len(title) < 1:
-        title_error = "Please enter a title"
-                  
-    body = request.form['body']
-    body_error = ""
-    if len(body) < 1:
-        body_error = "Please enter a body"
-
-    #if not title_error and not body_error:
-        #return [blog.name for blog in Blog.query.all()]
-
-    #else:
-        return render_template('newpost.html',
-        title_error=title_error,
-        body_error=body_error)
 
     
 @app.route('/', methods=['POST', 'GET'])
@@ -63,5 +65,5 @@ def index():
     return render_template('blog.html',title="Build A Blog", blogs=blogs, error=encoded_error and cgi.escape(encoded_error, quote=True))
 
 
-if __name__ == '__main__':
-    app.run()
+#if __name__ == '__main__':
+app.run()
