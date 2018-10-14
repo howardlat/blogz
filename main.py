@@ -25,8 +25,7 @@ def blog():
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
-    title = request.form['title']
-    return redirect('/blog', title=title)
+    return render_template('newpost.html')
 
 newposts = []
 
