@@ -31,13 +31,17 @@ def newpost():
     
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    blogs = []
-    if request.method == 'POST':
-        blog = request.form['blog']
-        blogs.append(blog)
-
     
-    return render_template('blog.html',title="Build A Blog", blog=blog, blogs=blogs)
+    if request.method == 'POST':
+        newtitle = request.form['title']
+        body = request.form['body']
+        new_blog = Blog(newtitle, body)
+        db.session.add(new_blog)
+        db.session.commit()
+
+    blogs = Blog.query.all()
+
+    return render_template('blog.html',title="Build A Blog", blogs=blogs)
 
 
 if __name__ == '__main__':

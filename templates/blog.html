@@ -8,10 +8,13 @@
     <h1>Build a Blog</h1>
 </div>
 
+<hr/>
+
 <ul>
-    {% for newpost in newposts %}
-        <li>{{title}}</li>
-        <li>{{body}}</li>
+    {% for blog in blogs %}
+        <li>{{title.name}}</li>
+        <li>{{body.name}}</li>
     {% endfor %}
 </ul>
+
 {% endblock %}
