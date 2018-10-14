@@ -36,7 +36,7 @@ def index():
         newpost = request.form['newpost']    
         newposts.append(newpost)
     
-    return render_template('newpost.html',title="Build A Blog", newposts=newposts)
+    return render_template('blog.html',title="Build A Blog", newposts=newposts)
 
 
 if __name__ == '__main__':
