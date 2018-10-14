@@ -1,5 +1,4 @@
 from flask import Flask, request, redirect, render_template
-import cgi
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -13,34 +12,13 @@ class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
-    body = db.Column(db.String(400))
+    body = db.Column(db.String(300))
 
     def __init__(self, title, body):
         self.title = title
         self.body = body
 
 
-@app.route('/')
-def error():
-
-    
-    title = request.form['title']
-    title_error = ""
-    if len(title) < 0:
-        title_error = "Please enter a title"
-
-    body = request.form['body']
-    body_error = ""
-    if len(body) < 0:
-        body_error = "Please enter a body"   
-
-    if not title_error and not body_error:
-        return render_template('blog.html')
-
-    else:
-        return redirect('/newpost',
-        title_error=title_error,
-        body_error=body_error)
 
 @app.route('/blog')
 def blog():
@@ -53,17 +31,14 @@ def newpost():
     
 @app.route('/', methods=['POST', 'GET'])
 def index():
-
+    blogs = []
     if request.method == 'POST':
-        blog_name = request.form['blog']
-        new_blog = blog_name
-        db.session.add(new_blog)
-        db.session.commit()
+        blog = request.form['blog']
+        blogs.append(blog)
 
-    blogs = Blog.query.all()
-    encoded_error = request.args.get("error")
-    return render_template('blog.html',title="Build A Blog", blogs=blogs, error=encoded_error and cgi.escape(encoded_error, quote=True))
+    
+    return render_template('blog.html',title="Build A Blog", blog=blog, blogs=blogs)
 
 
-#if __name__ == '__main__':
-app.run()
+if __name__ == '__main__':
+    app.run()
