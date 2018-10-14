@@ -15,7 +15,7 @@
     <form action='/newpost'>
         <label>
             Title for your new blog:
-            <input style="width: 210px;" type="text" name='title'/>
+            <input style="width: 210px;" type="text" name="title"/>
             <p class="error">{{title_error}}</p>
         </label>
 
@@ -26,9 +26,8 @@
             <p class="error">{{body_error}}</p>
         </label>
         </div>
-        <input type="submit" value='Add Entry' />
+        <input type="submit" name="Add-Entry"/>
     </form>
 
-    
    
 {% endblock %}

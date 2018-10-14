@@ -18,11 +18,12 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
-
-
+  
 @app.route('/blog')
 def blog():
-    return render_template('blog.html')
+    title = request.form['title']
+    body = request.form['body']
+    return render_template('blog.html', title=title, body=body)
 
 @app.route('/newpost')
 def newpost():
@@ -33,9 +34,9 @@ def newpost():
 def index():
     
     if request.method == 'POST':
-        newtitle = request.form['title']
+        title = request.form['title']
         body = request.form['body']
-        new_blog = Blog(newtitle, body)
+        new_blog = Blog(title, body)
         db.session.add(new_blog)
         db.session.commit()
 
