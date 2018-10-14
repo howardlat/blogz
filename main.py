@@ -23,9 +23,10 @@ class Blog(db.Model):
 def blog():
     return render_template('blog.html')
 
-@app.route('/newpost')
+@app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
-    return render_template('newpost.html')
+    title = request.form['title']
+    return redirect('/blog', title=title)
 
 newposts = []
 
@@ -36,7 +37,7 @@ def index():
         newpost = request.form['newpost']    
         newposts.append(newpost)
     
-    return render_template('blog.html',title="Build A Blog", newposts=newposts)
+    return render_template('newpost.html',title="Build A Blog", newposts=newposts)
 
 
 if __name__ == '__main__':

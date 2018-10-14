@@ -12,18 +12,18 @@
     <h1>Add a Blog Entry</h1>
 </div>
 
-    <form action='/newpost' name="newpost">
+    <form name="newpost" method="POST">
         <label>
             Title for your new blog:
-            <input style="width: 210px;" type="text" name="title"/>
-            <p class="error">{{title_error}}</p>
+            <input name="title" style="width: 210px;" type="text"/>
+            
         </label>
 
         <div class="b">             
         <label>
             Your new blog:
-            <input style="width: 250px; height: 170px;" type="text" name="body" />
-            <p class="error">{{body_error}}</p>
+            <input name="body" style="width: 250px; height: 170px;" type="text"/>
+            
         </label>
         </div>
         
@@ -31,6 +31,10 @@
         <input type="submit" name="Add-Entry"/>
       
     </form>
-
+<ul>
+    {% for newpost in newposts %}
+    <li>{{newpost}}</li>
+    {% endfor %}
+</ul>
    
 {% endblock %}
