@@ -8,14 +8,8 @@
     <h1>Build a Blog</h1>
 </div>
 
-<ul>
-    {% for newpost in newposts %}
-    <li>{{newpost.name}}
-        <form method="POST" action="/add">
-            <input type="hidden" name="newpost-id" value="{{newpost.id}}"/>
-        </form>
-    </li>
-    {% endfor %}
-</ul>
+title form: {{ title_form }} <br>                                
+title: {{ title }}                                     
+
 
 {% endblock %}
