@@ -11,7 +11,11 @@
 {% if newposts|length >= 1 %}
 <ul>
     {% for newpost in newposts %}
-    <li>{{newpost}}</li>
+    <li>{{newpost.name}}
+        <form method="POST" action="/newpost">
+            <input type="hidden" name="id" value="{{id.id}}"/>
+        </form>
+    </li>
     {% endfor %}
 </ul>
 {% endif %}
