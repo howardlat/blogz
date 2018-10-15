@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, url_for
+from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -13,18 +13,18 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(300))
+    submitted = db.Column(db.Boolean)
 
-    def __init__(self, title, body, blog_id):
+    def __init__(self, title, body):
         self.title = title
         self.body = body
-        self.id = id
+        self.submitted = False
 
+        
   
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
-    blog_form = request.form.get('id')
-    blog_args = request.args.get('id')
-    return render_template('blog.html', blog_form=blog_form, blog_args=blog_args)
+    return render_template('blog.html')
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -37,14 +37,24 @@ def index():
     if request.method == 'POST':
         title_name = request.form['title']
         body_name = request.form['body']
-        id_name = request.form['id']
-        newpost = Blog(title_name, body_name, id_name)
+        newpost = Blog(title_name, body_name)
         db.session.add(newpost)
         db.session.commit()
         
     
-    newposts = Blog.query.all()
-    return render_template('blog.html',title="Build A Blog", newposts=newposts)
+    newposts = Blog.query.filter_by(submitted=False).all()
+    submitted_newposts = Blog.query.filter_by(submitted=True).all()
+    return render_template('blog.html',title="Build A Blog", newposts=newposts, submitted_newposts=submitted_newposts)
+
+@app.route('/add', methods=['POST'])
+def add():
+    newpost_id = int(request.form['newpost-id'])
+    newpost = Blog.query.get(newpost_id)
+    newpost.submitted = True
+    db.session.add(newpost)
+    db.session.commit()
+
+    return redirect('/blog')
 
 
 if __name__ == '__main__':
