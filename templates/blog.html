@@ -8,8 +8,20 @@
     <h1>Build a Blog</h1>
 </div>
 
-title form: {{ title_form }} <br>                                
-title: {{ title }}                                     
+<ul>
+    
+    {{ title }}
+    <form method="POST">
+        <input type="hidden" value="{{title}}" />
+    </form>
+    <br>
+    {{ body }}
+    <form method="POST">
+        <input type="hidden" value="{{body}}" />    
+    </form>
+    
+    
+</ul>                                     
 
 
 {% endblock %}

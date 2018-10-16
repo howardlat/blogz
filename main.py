@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, url_for
+from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -22,28 +22,24 @@ class Blog(db.Model):
   
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
-    if request.method == 'POST':
-        return render_template('blog.html')
-    title = request.form['title']
-    return redirect(url_for('newpost', title=title))
+    return render_template('blog.html')
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
-    title_form = request.form.get('title')
-    title = request.args.get('title')
-    return render_template('newpost.html', title=title, title_form=title_form)
+    title = ""
+    body = ""
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        newpost = Blog(title, body)
+        db.session.add(newpost)
+        db.session.commit()                                          
+        return redirect('/blog')
+    return render_template('newpost.html')
 
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    
-    if request.method == 'POST':
-        title_name = request.form['title']
-        body_name = request.form['body']
-        newpost = Blog(title_name, body_name)
-        db.session.add(newpost)
-        db.session.commit()
-        
     
     newposts = Blog.query.all()
     return render_template('blog.html',title="Build A Blog", newposts=newposts)
