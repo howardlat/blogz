@@ -30,22 +30,29 @@ def blog():
 def newpost():
     title = ""
     body = ""
-          
-    if request.method == 'POST':
-        
-        title = request.form['title']
-        body = request.form['body']
-        newpost = Blog(title, body)
-        db.session.add(newpost)
-        db.session.commit()                                          
-        return redirect('/blog')
+    if len(title) < 0:
+        title_error = "Please enter a title"   
 
-    if len(title) == 0 or len(body) == 0:
-        error = "Please enter a title or body"
+    if len(body) < 0:
+        body_error = "Please enter a body"
 
-        return render_template('newpost.html', error=error)
+        if request.method == 'POST':
         
-    return render_template('newpost.html')
+       
+            title = request.form['title']
+            body = request.form['body']
+            newpost = Blog(title, body)
+            db.session.add(newpost)
+            db.session.commit()                                          
+            return redirect('/blog')
+    
+               
+        return render_template('newpost.html')
+
+    
+    return render_template('newpost.html', 
+    title_error=title_error,
+    body_error=body_error)
 
     
     
