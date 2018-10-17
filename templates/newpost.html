@@ -16,14 +16,14 @@
     <label>
         Title for your new blog:
         <input name="title" style="width: 210px;" type="text"/>
-        <p class="error">{{ title_error }}</p>
+        
     </label><br><br>
 
 <div class="b"> 
     <label>
         Your new blog:
         <input name="body" style="width: 250px; height: 170px;" type="text"/>
-        <p class="error">{{ body_error }}</p>
+       
     </label>
 </div>
 <br><br><br>        
@@ -31,5 +31,8 @@
 
 </form>     
 
+{% if error %}
+  <p class='error'>{{ error }}</p>
+{% endif %}
    
 {% endblock %}
