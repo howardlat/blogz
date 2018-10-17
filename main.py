@@ -22,12 +22,16 @@ class Blog(db.Model):
   
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
-    return render_template('blog.html')
+    blogs = Blog.query.all()
+    return render_template('blog.html', blogs=blogs)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
     title = ""
     body = ""
+    if len(title) == 0 or len(body) == 0:
+        error = "Please enter a title or body"
+        return redirect('/newpost', error=error)       
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
@@ -37,12 +41,10 @@ def newpost():
         return redirect('/blog')
     return render_template('newpost.html')
 
-
+            
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    
-    newposts = Blog.query.all()
-    return render_template('blog.html',title="Build A Blog", newposts=newposts)
+    return render_template('blog.html',title="Build A Blog")
 
 
 if __name__ == '__main__':

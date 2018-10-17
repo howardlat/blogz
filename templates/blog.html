@@ -9,19 +9,11 @@
 </div>
 
 <ul>
-    
-    {{ title }}
-    <form method="POST">
-        <input type="hidden" value="{{title}}" />
-    </form>
-    <br>
-    {{ body }}
-    <form method="POST">
-        <input type="hidden" value="{{body}}" />    
-    </form>
-    
-    
-</ul>                                     
+    {% for blog in blogs %}   
+    <h2>{{ blog.title }}</h2>
+    <p>{{ blog.body }}</p>
+    {% endfor %}    
+</ul>                     
 
 
 {% endblock %}
