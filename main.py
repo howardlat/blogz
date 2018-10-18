@@ -13,10 +13,12 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(300))
+    submitted = db.Column(db.Boolean)
     
     def __init__(self, title, body):
         self.title = title
         self.body = body
+        self.submitted = False
        
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
@@ -45,15 +47,8 @@ def newpost():
 
 @app.route('/post', methods=['POST', 'GET'])
 def post():
-    if request.method == 'GET':
-        title = request.args.get('title')
-        body = request.args.get('body')  
-        newpost = Blog(title, body)
-        db.session.add(newpost)
-        db.session.commit()           
-        blogs = Blog.query.all()
-        return render_template('post.html', blogs=blogs)
-
+            
+    return render_template('post.html')
                       
 @app.route('/', methods=['POST', 'GET'])
 def index():
