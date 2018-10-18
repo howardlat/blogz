@@ -41,7 +41,7 @@ def newpost():
         newpost = Blog(title, body)
         db.session.add(newpost)
         db.session.commit()                                          
-        return redirect('/blog')
+        return redirect('/post')
 
         
     return render_template('newpost.html')
