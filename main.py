@@ -43,16 +43,21 @@ def newpost():
         db.session.commit()                                          
         return redirect('/blog')
 
+        
     return render_template('newpost.html')
 
 @app.route('/post', methods=['POST', 'GET'])
 def post():
-    blog_id = int(request.form['blog-id'])
-    blog = Blog.query.get(blog_id)
-    blog.submitted = True
-    db.session.add(blog)
-    db.session.commit()        
-    return redirect('/post')
+    if request.method == 'GET':
+        title = request.args.get('title')
+        body = request.args.get('body')
+        newpost = Blog(title, body)
+        blog.submitted = True
+        db.session.add(newpost)
+        db.session.commit() 
+
+    submitted_blogs = Blog.query.filter_by(submitted=True).all()  
+    return render_template('post.html', submitted_blogs=submitted_blogs)
                       
 @app.route('/', methods=['POST', 'GET'])
 def index():
