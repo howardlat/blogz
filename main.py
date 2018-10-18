@@ -47,8 +47,12 @@ def newpost():
 
 @app.route('/post', methods=['POST', 'GET'])
 def post():
-            
-    return render_template('post.html')
+    blog_id = int(request.form['blog-id'])
+    blog = Blog.query.get(blog_id)
+    blog.submitted = True
+    db.session.add(blog)
+    db.session.commit()        
+    return redirect('/post')
                       
 @app.route('/', methods=['POST', 'GET'])
 def index():
