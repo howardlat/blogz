@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+<ul>
+    {% for blog in blogs %}   
+    <h2>{{ blog.title }}</h2>
+    <p>{{ blog.body }}</p>
+    {% endfor %}    
+</ul>              
+
+{% endblock %}
