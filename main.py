@@ -42,6 +42,18 @@ def newpost():
         return redirect('/blog')
 
     return render_template('newpost.html')
+
+@app.route('/post', methods=['POST', 'GET'])
+def post():
+    if request.method == 'GET':
+        title = request.args.get('title')
+        body = request.args.get('body')  
+        newpost = Blog(title, body)
+        db.session.add(newpost)
+        db.session.commit()           
+        blogs = Blog.query.get(1)
+        return render_template('post.html', blogs=blogs)
+
                       
 @app.route('/', methods=['POST', 'GET'])
 def index():
