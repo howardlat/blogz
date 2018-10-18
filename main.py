@@ -51,8 +51,8 @@ def post():
         newpost = Blog(title, body)
         db.session.add(newpost)
         db.session.commit()           
-        posts = Blog.query.get(id)
-        return render_template('post.html', posts=posts)
+        blogs = Blog.query.all()
+        return render_template('post.html', blogs=blogs)
 
                       
 @app.route('/', methods=['POST', 'GET'])
