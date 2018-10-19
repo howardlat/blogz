@@ -13,13 +13,11 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(300))
-    submitted = db.Column(db.Boolean)
-    
+        
     def __init__(self, title, body):
         self.title = title
         self.body = body
-        self.submitted = False
-       
+               
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
     blogs = Blog.query.all()
@@ -38,25 +36,21 @@ def newpost():
                          
         title = request.form['title']
         body = request.form['body']
+        id = request.args.get('id')
         newpost = Blog(title, body)
         db.session.add(newpost)
-        db.session.commit()                                          
-        return redirect('/post')
+        db.session.commit()
+        id = newpost.id
+        id = str(id)                                          
+        return redirect("/post?id=" + id)
 
-        
+       
     return render_template('newpost.html')
 
-@app.route('/post', methods=['POST', 'GET'])
+@app.route('/post', methods=['GET'])
 def post():
-    if request.method == 'GET':
-        title = request.args.get('title')
-        body = request.args.get('body')
-        newpost = Blog(title, body)
-        blog.submitted = True
-        db.session.add(newpost)
-        db.session.commit() 
-
-    submitted_blogs = Blog.query.filter_by(submitted=True).all()  
+    id = request.args.get('id')               
+    submitted_blogs = Blog.query.filter_by(id=id).all() 
     return render_template('post.html', submitted_blogs=submitted_blogs)
                       
 @app.route('/', methods=['POST', 'GET'])
