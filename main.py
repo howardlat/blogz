@@ -86,11 +86,17 @@ def logout():
     del session['username']
     return redirect('/login')
                        
-@app.route('/blog', methods=['POST', 'GET'])
+@app.route('/blog')
 def blog():
-    blogs = Blog.query.all()
-    users = User.query.all()
-    return render_template('blog.html', blogs=blogs, users=users)
+    if request.args.get('user'):
+        user = request.args.get('user')
+        owner = User.query.filter_by(username=user).first()
+        blogs = User.query.filter_by(owner=owner).all()
+        return render_template('blog.html', blogs=blogs, users=user)
+    else:    
+        blogs = Blog.query.all()
+        users = User.query.all()
+        return render_template('blog.html', blogs=blogs, users=users)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -120,9 +126,10 @@ def newpost():
 
 @app.route('/post', methods=['GET'])
 def post():
+    users = User.query.all()
     id = request.args.get('id')               
     submitted_blogs = Blog.query.filter_by(id=id).all()
-    return render_template('post.html', submitted_blogs=submitted_blogs)
+    return render_template('post.html', submitted_blogs=submitted_blogs, users=users)
 
 @app.route('/user')
 def user():
