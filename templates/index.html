@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    div.a { text-align: center;}
+</style> 
+<ul>
+    {% for user in users %}
+    <li><a href="/user?id={{user.id}}">{{user.username}}</a></li>
+        
+    {% endfor %}
+</ul>
+
+{% endblock %}
