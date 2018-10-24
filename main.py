@@ -88,15 +88,10 @@ def logout():
                        
 @app.route('/blog')
 def blog():
-    if request.args.get('user'):
-        user = request.args.get('user')
-        owner = User.query.filter_by(username=user).first()
-        blogs = User.query.filter_by(owner=owner).all()
-        return render_template('blog.html', blogs=blogs, users=user)
-    else:    
-        blogs = Blog.query.all()
-        users = User.query.all()
-        return render_template('blog.html', blogs=blogs, users=users)
+    
+    blogs = Blog.query.all()
+    users = User.query.all()
+    return render_template('blog.html', blogs=blogs, users=users)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -133,8 +128,10 @@ def post():
 
 @app.route('/user')
 def user():
-    
-    return render_template('user.html')
+    if request.method == 'GET':
+        user = request.args.get('user.id')
+        user = User.query.filter_by(user=user).all()
+        return render_template('user.html', user=user)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
