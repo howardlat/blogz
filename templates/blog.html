@@ -12,9 +12,9 @@
     <h2><a href="/post?id={{blog.id}}">{{ blog.title }}</a></h2>
     <p>{{ blog.body }}</p>
         {% for user in users %}
-            {% if user.id == blog.owner_id %}
+            {% if blog.owner_id == user.id %}
             written by
-            <a href="/user?user={{user.username}}">{{user.username}}</a> 
+            <a href="/blog?user={{user.username}}">{{user.username}}</a> 
             {% endif %}  
         {% endfor %}
     {% endfor %}   

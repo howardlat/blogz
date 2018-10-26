@@ -34,7 +34,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'blog', 'index', 'signup']
+    allowed_routes = ['login', 'signup', 'blog', 'index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -54,7 +54,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/signup', methods=['POST', 'GET'])
-def register():
+def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -88,10 +88,16 @@ def logout():
                        
 @app.route('/blog')
 def blog():
-    
-    blogs = Blog.query.all()
-    users = User.query.all()
-    return render_template('blog.html', blogs=blogs, users=users)
+    if request.args.get('user'):
+        users = request.args.get('user')
+        owner = User.query.filter_by(username=users).first()
+        blogs = Blog.query.filter_by(owner=owner).all()
+        users = User.query.all()
+        return render_template('blog.html', blogs=blogs, users=users)
+    else:
+        blogs = Blog.query.all()
+        users = User.query.all()
+        return render_template('blog.html', blogs=blogs, users=users)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -125,13 +131,6 @@ def post():
     id = request.args.get('id')               
     submitted_blogs = Blog.query.filter_by(id=id).all()
     return render_template('post.html', submitted_blogs=submitted_blogs, users=users)
-
-@app.route('/user')
-def user():
-    if request.method == 'GET':
-        user = request.args.get('user.id')
-        user = User.query.filter_by(user=user).all()
-        return render_template('user.html', user=user)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():

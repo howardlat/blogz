@@ -11,7 +11,7 @@
         {% for user in users %}
             {% if user.id == blog.owner_id %}
             written by
-            <a href="/user?user={{user.username}}">{{user.username}}</a> 
+            <a href="/blog?user={{user.username}}">{{user.username}}</a> 
             {% endif %}  
         {% endfor %} 
     {% endfor %}
